@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7 no-js" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8 no-js" lang="en-US">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en" class="no-js">
+
+<!-- moviegrid07:29-->
+<head>
+	<!-- Basic need -->
+	<title>Movies</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<link rel="profile" href="#">
+
+    <!--Google Font-->
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+	<!-- Mobile specific meta -->
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone-no">
+	<!--D3.js-->
+	<script src="https://d3js.org/d3.v4.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- CSS files -->
+	<link rel="stylesheet" href="css/plugins.css">
+	<link rel="stylesheet" href="css/style.css">
+	
+</head>
+<body>
+<!--preloading-->
+<div id="preloader">
+    <img class="logo" src="images/logo1.png" alt="" width="119" height="58">
+    <div id="status">
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!--end of preloading-->
+
+
+<!-- BEGIN | Header -->
+<header class="ht-header">
+	<div class="container">
+		<nav class="navbar navbar-default navbar-custom">
+				
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav flex-child-menu menu-left">
+					
+						<li class="dropdown first">
+							<a href="home.html" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li class="dropdown first">
+							<a href="home.html" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+						</li>
+						<li class="dropdown first">
+							<a href="home.html" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+						</li>
+					
+					
+						
+					</ul>
+					
+				</div>
+			<!-- /.navbar-collapse -->
+	    </nav>
+	    
+	   
+	</div>
+</header>
+<!-- END | Header -->
+
+<div class="hero common-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1 id='p1'> Movies Per Country</h1>
+				
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="page-single">
+	<div class="container">
+		
+				<h1>World Movie Production</h1>
+				<div class="flex-wrap-movielist" style='border: 2px solid white, '>
+						
+						<svg id="word_movies" style = 'background: rgba(0,0,0,0);display: block; margin:auto' width="800" height="450"></svg>
+				</div>
+					
+						
+				
+			
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="sidebar">
+					<div class="searh-form">
+						<h4 class="sb-title">Search for movie</h4>
+						<form class="form-style-1" action="#">
+							<div class="row">
+								<div class="col-md-12 form-it">
+									<label>Movie name</label>
+									<input type="text" placeholder="Enter keywords">
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Genres & Subgenres</label>
+									<div class="group-ip">
+										<select
+											name="skills" multiple="" class="ui fluid dropdown">
+											<option value="">Enter to filter genres</option>
+											<option value="Action1">Action 1</option>
+					                        <option value="Action2">Action 2</option>
+					                        <option value="Action3">Action 3</option>
+					                        <option value="Action4">Action 4</option>
+					                        <option value="Action5">Action 5</option>
+										</select>
+									</div>	
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Rating Range</label>
+									<select>
+									  <option value="range">-- Select the rating range below --</option>
+									  <option value="saab">-- Select the rating range below --</option>
+									</select>
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Release Year</label>
+									<div class="row">
+										<div class="col-md-6">
+											<select>
+											  <option value="range">From</option>
+											  <option value="number">10</option>
+											</select>
+										</div>
+										<div class="col-md-6">
+											<select>
+											  <option value="range">To</option>
+											  <option value="number">20</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12 ">
+									<input class="submit" type="submit" value="submit">
+								</div>
+							</div>
+						</form>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- end of footer section-->
+
+<script src="js/jquery.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/plugins2.js"></script>
+<script src="js/custom.js"></script>
+<script src="js/d3.js"></script>
+</body>
+
+<!-- moviegrid07:38-->
+</html>
