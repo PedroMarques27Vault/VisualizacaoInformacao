@@ -12,6 +12,7 @@ var projection = d3.geoMercator()
 
 d3.queue()
   .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")  // World shape
+  .defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_gpsLocSurfer.csv") // Position of circles
   .await(ready);
 
 d3.csv("js/movies_metadata.csv", function(data) {
