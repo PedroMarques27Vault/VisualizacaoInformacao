@@ -11,11 +11,11 @@ var projection = d3.geoMercator()
   .center([0,20])
   .translate([width / 2, height / 2]);
 
-d3.queue().defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson").await(load_movies_per_country);
+d3.queue().defer(d3.json, "custom.geo.json").await(load_movies_per_country);
 // Data and color scale
 
 var colorScale = d3.scaleThreshold()
-  .domain([0, 5, 100, 200, 3000])
+  .domain([0, 100, 500,1000,5000,10000,20000 ])
   .range(d3.schemeBlues[7]);
 
 
@@ -51,24 +51,7 @@ var tooltip = d3.select("#word_movies")
 function ready(error,datageo,data) {
 
 
-    let mouseLeave = function (d) {
-        d3.selectAll(".Country")
-            .transition()
-            .duration(200)
-            .style("opacity", .8)
-        d3.select(this)
-            .transition()
-            .duration(200)
-            .style("stroke", "transparent")
-        div.transition()
-            .duration('50')
-            .style("opacity", 0);
-    }
-    let cc = (data.country_codes)
 
-    cc.forEach(function (item, index, array) {
-        console.log(item, index)
-    })
     // Draw the map
     svg.append("g")
         .selectAll("path")
@@ -81,9 +64,9 @@ function ready(error,datageo,data) {
         )
         // set the color of each country
         .attr("fill", function (d) {
-            var subs = d.id.substring(0, d.id.length - 1)
-            if (data.country_codes.indexOf(subs) >= 0) {
-                d.total = data.countries[d.id.substring(0, d.id.length - 1)].Count
+            var subs = d.properties.wb_a2
+            if (subs in data) {
+                d.total = data[subs].Count
             } else {
                 d.total = 0
             }
@@ -97,36 +80,46 @@ function ready(error,datageo,data) {
         .style("opacity", .8)
         .on("mouseover", function (d) {
             let count, budget, revenue = 0
-            let subs = d.id.substring(0, d.id.length - 1)
-            if (data.country_codes.indexOf(subs) >= 0) {
-                count = data.countries[subs].Count
-                revenue = data.countries[subs].Revenue
-                budget = data.countries[subs].Budget
 
+
+
+            var subs = d.properties.wb_a2
+            if (subs in data) {
+                count = data[subs].Count
+                revenue = data[subs].Revenue
+                budget = data[subs].Budget
+
+
+                return tooltip.style("visibility", "visible").style("padding", "10px").style("top", (event.pageY)+"px")
+                    .style("left",(event.pageX)+"px").html(
+                        "<h3>"+d.properties.admin+"</h3>"+
+                        "<p>Movies Produced By This Country: "+count +" </p>"
+                        +"<p>Invested In Movies: "+budget +" </p>"
+                        +"<p>Revenue From Movies: "+revenue +" </p>")
             }
-            return tooltip.style("visibility", "visible").style("padding", "10px").style("top", (event.pageY)+"px")
-                .style("left",(event.pageX)+"px").html(
-                    "<p>Movies Produced By This Country: "+count +" </p>"
-                    +"<p>Invested In Movies: "+budget +" </p>"
-                    +"<p>Revenue From Movies: "+revenue +" </p>")
 
-        })
+
+        }).on("mouseleave",function(d){
+
+        return tooltip.style("visibility", "hidden")}).on("click", function (d) { click(d); })
 }
 
 
-
+function click(d){
+    window.location = window.location.origin + ("/movielist.html?country="+d.properties.wb_a2)
+}
 
 function load_movies_per_country(error, datageo){
 
     d3.csv("js/movies_metadata.csv", function(error, data) {
         var countries = {}
-        const country_codes = []
         let c = data.forEach(d => {
             if (d.production_countries && d.production_countries.includes('[') && d.production_countries.length!==2){
 
                 var pairs = cutSides(d.production_countries).split(", ");
                 let _revenue = parseFloat(d.revenue)
                 let _budget = parseFloat(d.budget)
+
                 pairs.forEach(s=>{
                     var pair = cutSides(s).split(": ");
                     var result = {};
@@ -134,12 +127,13 @@ function load_movies_per_country(error, datageo){
 
                     if (pair[0]==="'iso_3166_1'"){
                         pair[1] = pair[1].substring(1, s.length - 1)
+
                         if (pair[1] in countries){
-                            countries[pair[1]] = {Count:countries[pair[1]].Count+1, Budget:countries[pair[1]].budget+_budget,Revenue:countries[pair[1]].Revenue+_revenue}
+                            countries[pair[1]] = {Count:countries[pair[1]].Count+1, Budget:countries[pair[1]].Budget+_budget,Revenue:countries[pair[1]].Revenue+_revenue}
 
                         }else{
                             countries[pair[1]] =  {Count:1, Budget:_budget,Revenue:_revenue}
-                            country_codes.push(pair[1])
+
                         }
 
                     }
@@ -148,7 +142,7 @@ function load_movies_per_country(error, datageo){
             }
         });
 
-        ready(error,datageo, {countries,country_codes})
+        ready(error,datageo, countries)
     })
 
 
