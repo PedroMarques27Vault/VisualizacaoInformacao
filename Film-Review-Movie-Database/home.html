@@ -38,6 +38,7 @@
 	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 	
 </head>
 <body>
@@ -95,7 +96,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="hero-ct">
-					<h1 id='p1'> Movies Per Country</h1>
+					<h1 id='p1' > Movies Per Country</h1>
 				
 				</div>
 			</div>
@@ -105,53 +106,74 @@
 
 <div class="page-single">
 	<div class="container">
-		
-				<h1>World Movie Production</h1>
-				<div class="flex-wrap-movielist" id="word_movies" style='border: 2px solid white'>
-						
-						<svg  style = 'background: rgba(0,0,0,0);display: block; margin:auto' width="800" height="450"></svg>
-				</div>
-					
-						
-				
-			
-			<div class="col-md-4 col-sm-12 col-xs-12">
-				<div class="sidebar">
-					<div class="searh-form">
-						<h4 class="sb-title">Search for movie</h4>
-						<div class="row">
 
-							<div class="row align-items-center">
-								<div class="col-sm-2"><p id="value-range"></p></div>
-								<div class="col-sm"><div id="slider-range"></div></div>
-							</div>
+		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
 
+				<h4 class="sb-title">Rating</h4>
+				<div class="row" style=" margin:10px">
 
-						</div>
-
+					<div class="row align-items-center">
+						<div class="col-sm"><div id="slider-range"></div></div>
 					</div>
-					
+
+
 				</div>
-			</div>
-		<div class="col-md-4 col-sm-12 col-xs-12">
-			<div class="sidebar">
-				<div class="searh-form">
-					<h4 class="sb-title">Date Selection</h4>
-					<div class="row">
+
+
+
+
+
+		</div>
+
+		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
+
+					<h4 class="sb-title">Release Date</h4>
+					<div class="row" style=" margin:10px">
 
 						<div class="row align-items-center">
-							<div class="col-sm-2"><p id="value-range-date"></p></div>
 							<div class="col-sm"><div id="slider-range-date"></div></div>
 						</div>
 
 
 					</div>
 
-				</div>
+
+		</div>
+		<div class="col-md-8 col-sm-24 col-xs-24">
+
+			<h1 style="color:lightsteelblue">World Movie Production</h1>
+			<div  id="world_movies">
+				<svg  id="map" style = 'background-color: rgba(0,0,0,0); border: 2px white solid' width="700" height="450"></svg>
+
+
+				<svg id='svg_pie' style="fill:white" width='300' height='400'></svg>
+
+			</div>
+
+		</div>
+
+
+
+
+
+		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
+			<div class="sidebar">
+					<h4 class="sb-title">Genre Selection</h4>
+					<input type="button" id="checkbox_submit" value="Filter">
+					<div class="row" style="padding:10px">
+
+						<div id="checkbox_div" class="row align-items-center" style="margin:auto">
+						</div>
+
+
+
+					</div>
+
+
 
 			</div>
 		</div>
-		</div>
+
 	</div>
 </div>
 
