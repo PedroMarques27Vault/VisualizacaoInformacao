@@ -27,12 +27,17 @@
 	<script src="https://d3js.org/d3.v4.js"></script>
 	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 	<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
-	
+
+	<script src="https://unpkg.com/d3-simple-slider"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<!-- CSS files -->
 	<link rel="stylesheet" href="css/plugins.css">
+	<link rel="stylesheet" href="css/custom_slider.scss">
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	
 </head>
 <body>
@@ -114,55 +119,16 @@
 				<div class="sidebar">
 					<div class="searh-form">
 						<h4 class="sb-title">Search for movie</h4>
-						<form class="form-style-1" action="#">
-							<div class="row">
-								<div class="col-md-12 form-it">
-									<label>Movie name</label>
-									<input type="text" placeholder="Enter keywords">
-								</div>
-								<div class="col-md-12 form-it">
-									<label>Genres & Subgenres</label>
-									<div class="group-ip">
-										<select
-											name="skills" multiple="" class="ui fluid dropdown">
-											<option value="">Enter to filter genres</option>
-											<option value="Action1">Action 1</option>
-					                        <option value="Action2">Action 2</option>
-					                        <option value="Action3">Action 3</option>
-					                        <option value="Action4">Action 4</option>
-					                        <option value="Action5">Action 5</option>
-										</select>
-									</div>	
-								</div>
-								<div class="col-md-12 form-it">
-									<label>Rating Range</label>
-									<select>
-									  <option value="range">-- Select the rating range below --</option>
-									  <option value="saab">-- Select the rating range below --</option>
-									</select>
-								</div>
-								<div class="col-md-12 form-it">
-									<label>Release Year</label>
-									<div class="row">
-										<div class="col-md-6">
-											<select>
-											  <option value="range">From</option>
-											  <option value="number">10</option>
-											</select>
-										</div>
-										<div class="col-md-6">
-											<select>
-											  <option value="range">To</option>
-											  <option value="number">20</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12 ">
-									<input class="submit" type="submit" value="submit">
-								</div>
+						<div class="row">
+
+							<div class="row align-items-center">
+								<div class="col-sm-2"><p id="value-range"></p></div>
+								<div class="col-sm"><div id="slider-range"></div></div>
 							</div>
-						</form>
+
+
+						</div>
+
 					</div>
 					
 				</div>
@@ -178,6 +144,7 @@
 <script src="js/plugins2.js"></script>
 <script src="js/custom.js"></script>
 <script src="js/countries.js"></script>
+<script src="js/range_slider.js"></script>
 </body>
 
 <!-- moviegrid07:38-->

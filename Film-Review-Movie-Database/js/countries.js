@@ -11,13 +11,14 @@ var projection = d3.geoMercator()
   .center([0,20])
   .translate([width / 2, height / 2]);
 
-d3.queue().defer(d3.json, "custom.geo.json").await(load_movies_per_country);
+d3.queue().defer(d3.json, "custom.geo.json").await(load_data);
 // Data and color scale
 
 var colorScale = d3.scaleThreshold()
   .domain([0, 100, 500,1000,5000,10000,20000 ])
   .range(d3.schemeBlues[7]);
 
+// Range
 
 
 
@@ -45,15 +46,78 @@ var tooltip = d3.select("#word_movies")
     .style("border-width", "1px")
     .style("border-radius", "5px")
 
-    .html("<p>I'm a tooltip written in HTML</p><img src='https://github.com/holtzy/D3-graph-gallery/blob/master/img/section/ArcSmal.png?raw=true'></img><br>Fancy<br><span style='font-size: 40px;'>Isn't it?</span>");
+    .html("<p>I'm a tooltip written in HTML</p><span style='font-size: 40px;'>Isn't it?</span>");
+
+let filters = {genres: [], rating :[0,10], release:[1900, 2025]}
+var gRange = d3
+    .select('div#slider-range')
+    .append('svg')
+    .attr('width', 500)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+var all_data = []
 
 
-function ready(error,datageo,data) {
 
 
+
+
+
+
+function ready(error,datageo,countries, data) {
+
+    var sliderRange = d3
+        .sliderBottom()
+        .min(0)
+        .max(10)
+        .width(300)
+        .tickFormat(d3.format(".1f"))
+        .ticks(5)
+        .default([0.0, 10])
+        .fill('#2196f3')
+        .on('onchange', async val => {
+            filters.rating = val
+
+
+            var newdata = data.filter(function (a) {
+                return a.vote_average >= filters.rating[0] && a.vote_average <= filters.rating[1]
+            });
+            countries =  (load_movies_per_country(error, datageo, newdata));
+            svg
+                .selectAll("path")
+                .data(datageo.features).attr("fill", function (d) {
+                var subs = d.properties.wb_a2
+
+                if (subs in countries) {
+                    d.total = countries[subs].Count
+                } else {
+                    d.total = 0
+                }
+
+                return colorScale(d.total);
+            })
+            // Draw the map
+
+
+
+            d3.select('p#value-range').text(val.map(d3.format('.1f')).join('-'));
+
+        });
+
+
+
+    gRange.call(sliderRange);
+
+    d3.select('p#value-range').text(
+        sliderRange
+            .value()
+            .map(d3.format('.1f'))
+            .join('-')
+    );
 
     // Draw the map
-    svg.append("g")
+    svg
         .selectAll("path")
         .data(datageo.features)
         .enter()
@@ -65,8 +129,9 @@ function ready(error,datageo,data) {
         // set the color of each country
         .attr("fill", function (d) {
             var subs = d.properties.wb_a2
-            if (subs in data) {
-                d.total = data[subs].Count
+
+            if (subs in countries) {
+                d.total = countries[subs].Count
             } else {
                 d.total = 0
             }
@@ -84,10 +149,10 @@ function ready(error,datageo,data) {
 
 
             var subs = d.properties.wb_a2
-            if (subs in data) {
-                count = data[subs].Count
-                revenue = data[subs].Revenue
-                budget = data[subs].Budget
+            if (subs in countries) {
+                count = countries[subs].Count
+                revenue = countries[subs].Revenue
+                budget = countries[subs].Budget
 
 
                 return tooltip.style("visibility", "visible").style("padding", "10px").style("top", (event.pageY)+"px")
@@ -109,41 +174,90 @@ function click(d){
     window.location = window.location.origin + ("/movielist.html?country="+d.properties.wb_a2)
 }
 
-function load_movies_per_country(error, datageo){
-
+function load_data(error, datageo){
     d3.csv("js/movies_metadata.csv", function(error, data) {
-        var countries = {}
-        let c = data.forEach(d => {
-            if (d.production_countries && d.production_countries.includes('[') && d.production_countries.length!==2){
+        data.forEach(d => {
+            if (d.genres && d.genres.includes('[') && d.genres.length!==2){
 
-                var pairs = cutSides(d.production_countries).split(", ");
-                let _revenue = parseFloat(d.revenue)
-                let _budget = parseFloat(d.budget)
+                var pairs = cutSides(d.genres).split(", ");
 
+                d.genres = []
                 pairs.forEach(s=>{
                     var pair = cutSides(s).split(": ");
-                    var result = {};
-                    result[pair[0]] = cutSides(pair[1]);
 
-                    if (pair[0]==="'iso_3166_1'"){
-                        pair[1] = pair[1].substring(1, s.length - 1)
+                    cutted_sides = cutSides(pair[1]);
 
-                        if (pair[1] in countries){
-                            countries[pair[1]] = {Count:countries[pair[1]].Count+1, Budget:countries[pair[1]].Budget+_budget,Revenue:countries[pair[1]].Revenue+_revenue}
+                    if (pair[0]==="name'"){
+                        pair[1] = pair[1].substring(1, pair[1].length - 1)
+                        d.genres.push(pair[1])
 
-                        }else{
-                            countries[pair[1]] =  {Count:1, Budget:_budget,Revenue:_revenue}
 
-                        }
 
                     }
                 })
 
+
+            }
+            if (d.production_countries && d.production_countries.includes('[') && d.production_countries.length!==2){
+                var pairs = cutSides(d.production_countries).split(", ");
+
+                d.production_countries = []
+                pairs.forEach(s=>{
+                    var pair = cutSides(s).split(": ");
+
+                    if (pair[0]!=="name'"){
+                        d.production_countries.push(pair[1].substring(1, pair[1].length))
+
+                    }
+                })
+
+
+
+
+
+
+
+
+            }
+        })
+
+        var countries = load_movies_per_country(error,datageo,data)
+        ready(error,datageo, countries, data)
+
+    })
+}
+
+function load_movies_per_country(error,datageo, data){
+        var countries = {}
+
+        data.forEach(d => {
+            if (d.production_countries){
+                let _revenue = parseFloat(d.revenue)
+                let _budget = parseFloat(d.budget)
+                for (let c of d.production_countries){
+                    if (c in countries){
+                        countries[c] = {Count:countries[c].Count+1, Budget:countries[c].Budget+_budget,Revenue:countries[c].Revenue+_revenue}
+
+                    }else{
+                        countries[c] =  {Count:1, Budget:_budget,Revenue:_revenue}
+
+                    }
+                }
+
+
+
+
+
+
             }
         });
 
-        ready(error,datageo, countries)
-    })
+
+
+
+
+
+    return countries
 
 
 
