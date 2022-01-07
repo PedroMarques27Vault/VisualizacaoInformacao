@@ -17,81 +17,101 @@ d3.queue().defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gal
 var colorScale = d3.scaleThreshold()
   .domain([0, 5, 100, 200, 3000])
   .range(d3.schemeBlues[7]);
- 
 
 
-// Load external data and boot
 
- 
+
+
+var svg_customContent = d3.select("#div_customContent")
+    .append("svg")
+    .attr("width", 400)
+    .attr("height", 400)
+
+// Append a circle
+svg_customContent.append("circle")
+    .attr("id", "circleCustomTooltip")
+    .attr("cx", 150)
+    .attr("cy", 200)
+    .attr("r", 40)
+    .attr("fill", "#69b3a2")
+
+// create a tooltip
+var tooltip = d3.select("#word_movies")
+    .append("div")
+    .style("position", "absolute")
+    .style("visibility", "hidden")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "1px")
+    .style("border-radius", "5px")
+
+    .html("<p>I'm a tooltip written in HTML</p><img src='https://github.com/holtzy/D3-graph-gallery/blob/master/img/section/ArcSmal.png?raw=true'></img><br>Fancy<br><span style='font-size: 40px;'>Isn't it?</span>");
+
+
 function ready(error,datageo,data) {
-    var div = d3.select("body").append("div")
-        .attr("class", "tooltip-donut")
-        .style("opacity", 0);
 
-  let mouseOver = function(d) {
-        console.log(d.total)
-    d3.selectAll(".Country")
-      .transition()
-      .duration(200)
-      .style("opacity", .5)
-    d3.select(this)
-      .transition()
-      .duration(200)
-      .style("opacity", 1)
-      .style("stroke", "black")
-      div.transition()
-          .duration(50)
-          .style("opacity", 1);
-      div.html('HELLO')
-          .style("left", (d3.event.pageX + 10) + "px")
-          .style("top", (d3.event.pageY - 15) + "px");
-  }
 
-  let mouseLeave = function(d) {
-    d3.selectAll(".Country")
-      .transition()
-      .duration(200)
-      .style("opacity", .8)
-    d3.select(this)
-      .transition()
-      .duration(200)
-      .style("stroke", "transparent")
-      div.transition()
-          .duration('50')
-          .style("opacity", 0);
-  }
+    let mouseLeave = function (d) {
+        d3.selectAll(".Country")
+            .transition()
+            .duration(200)
+            .style("opacity", .8)
+        d3.select(this)
+            .transition()
+            .duration(200)
+            .style("stroke", "transparent")
+        div.transition()
+            .duration('50')
+            .style("opacity", 0);
+    }
     let cc = (data.country_codes)
 
-    cc.forEach(function(item, index, array) {
+    cc.forEach(function (item, index, array) {
         console.log(item, index)
     })
-  // Draw the map
-  svg.append("g")
-    .selectAll("path")
-    .data(datageo.features)
-    .enter()
-    .append("path")
-      // draw each country
-      .attr("d", d3.geoPath()
-        .projection(projection)
-      )
-      // set the color of each country
-      .attr("fill", function (d) {
+    // Draw the map
+    svg.append("g")
+        .selectAll("path")
+        .data(datageo.features)
+        .enter()
+        .append("path")
+        // draw each country
+        .attr("d", d3.geoPath()
+            .projection(projection)
+        )
+        // set the color of each country
+        .attr("fill", function (d) {
             var subs = d.id.substring(0, d.id.length - 1)
-          if (data.country_codes.indexOf(subs) >= 0){
-              d.total = data.countries[d.id.substring(0, d.id.length - 1)].Count
-          }else{
-              d.total = 0
-          }
+            if (data.country_codes.indexOf(subs) >= 0) {
+                d.total = data.countries[d.id.substring(0, d.id.length - 1)].Count
+            } else {
+                d.total = 0
+            }
 
-        return colorScale(d.total);
-      })
-      .style("stroke", "transparent")
-      .attr("class", function(d){ return "Country" } )
-      .style("opacity", .8)
-      .on("mouseover", mouseOver )
-      .on("mouseleave", mouseLeave )
-    }
+            return colorScale(d.total);
+        })
+        .style("stroke", "transparent")
+        .attr("class", function (d) {
+            return "Country"
+        })
+        .style("opacity", .8)
+        .on("mouseover", function (d) {
+            let count, budget, revenue = 0
+            let subs = d.id.substring(0, d.id.length - 1)
+            if (data.country_codes.indexOf(subs) >= 0) {
+                count = data.countries[subs].Count
+                revenue = data.countries[subs].Revenue
+                budget = data.countries[subs].Budget
+
+            }
+            return tooltip.style("visibility", "visible").style("padding", "10px").style("top", (event.pageY)+"px")
+                .style("left",(event.pageX)+"px").html(
+                    "<p>Movies Produced By This Country: "+count +" </p>"
+                    +"<p>Invested In Movies: "+budget +" </p>"
+                    +"<p>Revenue From Movies: "+revenue +" </p>")
+
+        })
+}
 
 
 
