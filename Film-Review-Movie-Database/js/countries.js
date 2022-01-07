@@ -56,6 +56,14 @@ var gRange = d3
     .attr('height', 100)
     .append('g')
     .attr('transform', 'translate(30,30)');
+
+var gRangeDate = d3
+    .select('div#slider-range-date')
+    .append('svg')
+    .attr('width', 500)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
 var all_data = []
 
 
@@ -106,11 +114,62 @@ function ready(error,datageo,countries, data) {
         });
 
 
+    var sliderRangeDate = d3
+        .sliderBottom()
+        .min(1900)
+        .max(2025)
+        .width(300)
+        .tickFormat(d3.format(",.0f"))
+        .ticks(5)
+        .default([1900, 2025])
+        .fill('#2196f3')
+        .on('onchange', async val => {
+            filters.release = val
+
+            var newdata = data.filter(function (a) {
+
+                if (a.release_date){
+
+                    date = parseInt(a.release_date.substring(0, 4))
+                    return date >= filters.release[0] && date <= filters.release[1]
+                }
+            });
+            countries =  (load_movies_per_country(error, datageo, newdata));
+            svg
+                .selectAll("path")
+                .data(datageo.features).attr("fill", function (d) {
+                var subs = d.properties.wb_a2
+
+                if (subs in countries) {
+                    d.total = countries[subs].Count
+                } else {
+                    d.total = 0
+                }
+
+                return colorScale(d.total);
+            })
+            // Draw the map
+
+
+
+            d3.select('p#value-range-date').text(val.map(d3.format(",.0f")).join('-'));
+
+        });
+
 
     gRange.call(sliderRange);
 
     d3.select('p#value-range').text(
         sliderRange
+            .value()
+            .map(d3.format('.1f'))
+            .join('-')
+    );
+
+    gRangeDate.call(sliderRangeDate);
+
+    d3.select('p#value-range-date').text(
+        sliderRangeDate
             .value()
             .map(d3.format('.1f'))
             .join('-')
