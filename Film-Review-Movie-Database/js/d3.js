@@ -11,7 +11,7 @@ var projection = d3.geoMercator()
   .center([0,20])
   .translate([width / 2, height / 2]);
 
-d3.queue().defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson").await(ready);
+d3.queue().defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson").await(load_movies_per_country);
 // Data and color scale
 
 var colorScale = d3.scaleThreshold()
@@ -23,11 +23,11 @@ var colorScale = d3.scaleThreshold()
 // Load external data and boot
 
  
-function ready(error,datageo) {
+function ready(error,datageo,data) {
     var div = d3.select("body").append("div")
         .attr("class", "tooltip-donut")
         .style("opacity", 0);
-    let data = load_movies_per_country()
+
   let mouseOver = function(d) {
         console.log(d.total)
     d3.selectAll(".Country")
@@ -61,7 +61,7 @@ function ready(error,datageo) {
           .style("opacity", 0);
   }
     let cc = (data.country_codes)
-    console.log(typeof cc)
+
     cc.forEach(function(item, index, array) {
         console.log(item, index)
     })
@@ -77,10 +77,9 @@ function ready(error,datageo) {
       )
       // set the color of each country
       .attr("fill", function (d) {
-
-          if (data.country_codes.indexOf(("AE")) >= 0){
-              console.log(data, d.id.substring(0, d.id.length - 1))
-              d.total = data[d.id.substring(0, d.id.length - 1)]['count']
+            var subs = d.id.substring(0, d.id.length - 1)
+          if (data.country_codes.indexOf(subs) >= 0){
+              d.total = data.countries[d.id.substring(0, d.id.length - 1)].Count
           }else{
               d.total = 0
           }
@@ -97,45 +96,42 @@ function ready(error,datageo) {
 
 
 
-function load_movies_per_country(){
-    var countries = {"HELLOOOO":1}
-    const country_codes = []
+function load_movies_per_country(error, datageo){
 
-    console.log(d3.keys(countries))
-    d3.csv("js/movies_metadata.csv", function(data) {
+    d3.csv("js/movies_metadata.csv", function(error, data) {
+        var countries = {}
+        const country_codes = []
+        let c = data.forEach(d => {
+            if (d.production_countries && d.production_countries.includes('[') && d.production_countries.length!==2){
 
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].production_countries && data[i].production_countries.includes('[') && data[i].production_countries.length!=2){
-
-                var pairs = cutSides(data[i].production_countries).split(", ");
-                let revenue = parseFloat(data[i].revenue)
-                let budget = parseFloat(data[i].budget)
-                pairs.map(function(s) { 
+                var pairs = cutSides(d.production_countries).split(", ");
+                let _revenue = parseFloat(d.revenue)
+                let _budget = parseFloat(d.budget)
+                pairs.forEach(s=>{
                     var pair = cutSides(s).split(": ");
                     var result = {};
-                    result[pair[0]] = cutSides(pair[1]); 
+                    result[pair[0]] = cutSides(pair[1]);
 
                     if (pair[0]==="'iso_3166_1'"){
-                        
                         pair[1] = pair[1].substring(1, s.length - 1)
                         if (pair[1] in countries){
-                            countries[pair[1]] = {"count":countries[pair[1]]["count"]+1, "budget":countries[pair[1]]["budget"]+budget,"revenue":countries[pair[1]]["revenue"]+revenue}
+                            countries[pair[1]] = {Count:countries[pair[1]].Count+1, Budget:countries[pair[1]].budget+_budget,Revenue:countries[pair[1]].Revenue+_revenue}
+
                         }else{
-                            countries[pair[1]] =  {"count":1, "budget":budget,"revenue":revenue} 
+                            countries[pair[1]] =  {Count:1, Budget:_budget,Revenue:_revenue}
                             country_codes.push(pair[1])
                         }
-                        
+
                     }
-                    return result;
-                });
+                })
+
             }
-           
-            
-     
-        }
-    
-    });
-    return {countries,country_codes}
+        });
+
+        ready(error,datageo, {countries,country_codes})
+    })
+
+
 
 }
 
