@@ -65,10 +65,15 @@ var all_genres = new Set()
 var all_countries = new Set()
 filters.countries=("All")
 all_countries.add("All")
+all_genres.add("All")
 
 // A function that create / update the plot for a given variable:
 function update(datageo, data, original_data) {
-    console.log(datageo)
+
+    var country_code_map = get_country_list(datageo)
+
+    d3.select("#title").html("<h1>Seeing results for " + country_code_map[filters.countries]+"</h1>")
+
     var sliderRange = d3
         .sliderBottom()
         .min(0)
@@ -92,11 +97,23 @@ function update(datageo, data, original_data) {
         .attr("type", "checkbox")
         .attr("id", function(d,i) { return i; })
         .on("change", val => {
-            if (filters.genres.has(val)){
-                filters.genres.delete(val)
+            if (val==='All'){
+                if (filters.genres.has(val)){
+                    d3.select("#checkbox_div").selectAll('input').property('checked', false);
+                    filters.genres = new Set()
+                }else{
+                    filters.genres = all_genres
+                    d3.select("#checkbox_div").selectAll('input').property('checked', true);
+                }
+
             }else{
-                filters.genres.add(val)
+                if (filters.genres.has(val)){
+                    filters.genres.delete(val)
+                }else{
+                    filters.genres.add(val)
+                }
             }
+
 
 
 
@@ -106,9 +123,7 @@ function update(datageo, data, original_data) {
     d3.select("#checkbox_submit").on("click",val=>{
         apply_filters(datageo, data,original_data)
 
-
     })
-    var country_code_map = get_country_list(datageo)
 
 
 
@@ -170,12 +185,11 @@ function update(datageo, data, original_data) {
         .append('path')
         .merge(u)
         .transition()
-        .duration(1000)
+        .duration(1)
         .attr('d', d3.arc()
             .innerRadius(radius/2)
             .outerRadius(radius)
-        )
-        .attr('fill', function(d){ return(color(d.data.key)) })
+        ).attr('fill', function(d){ return(color(d.data.key)) })
         .attr("stroke", "white")
         .style("stroke-width", "2px")
         .style("opacity", 1)
@@ -291,8 +305,7 @@ function load_data(error, datageo){
         }
 
 
-
-        update(datageo, data, data)
+        apply_filters(datageo, data, data)
 
     })
 }
@@ -329,12 +342,12 @@ function apply_filters(datageo, data, original_data){
 
         return false
     });
-    console.log(genre_counter(altereddata))
     update(datageo, altereddata, original_data)
     return altereddata
 }
 function genre_counter(data){
     var counter = {}
+    var avg_rating = {}
     data.forEach(d=>{
         for (var g of d.genres){
             if (g in counter){
