@@ -6,20 +6,20 @@ var svg = d3.select("#map"),
 
 // Map and projection
 var path = d3.geoPath();
-var projection = d3
-    .geoEquirectangular()
-    .center([0, 15]) // set centre to further North
-    .scale([width/(2*Math.PI)]) // scale to fit group width
-    .translate([width/2,height/2]) // ensure centred in group
-;
+var projection = d3.geoMercator()
+
+    .center([0, 40]) // set centre to further North
+    .scale((width) / (2.5 * Math.PI))
+    .translate([width / 2, height / 2]);
+
 
 
 d3.queue().defer(d3.json, "custom.geo.json").await(load_data);
 // Data and color scale
 
 var colorScale = d3.scaleThreshold()
-  .domain([0, 50, 100,500,1000,5000,10000,20000,30000 ])
-  .range(d3.schemeBlues[9]);
+  .domain([0, 1, 50, 100,500,1000,5000,10000,20000 ])
+  .range(d3.schemeReds[9]);
 
 // Range
 
@@ -68,7 +68,6 @@ var gRangeDate = d3
 
 function ready(error,datageo,countries, data) {
 
-
     var sliderRange = d3
         .sliderBottom()
         .min(0)
@@ -80,27 +79,6 @@ function ready(error,datageo,countries, data) {
         .fill('red')
         .on('onchange', async val => {
             filters.rating = val
-
-
-            
-            countries =  (load_movies_per_country(error, datageo, data));
-            svg
-                .selectAll("path")
-                .data(datageo.features).attr("fill", function (d) {
-                var subs = d.properties.wb_a2
-
-                if (subs in countries) {
-                    d.total = countries[subs].Count
-                } else {
-                    d.total = 0
-                }
-
-                return colorScale(d.total);
-            })
-            // Draw the map
-
-
-
             d3.select('p#value-range').text(val.map(d3.format('.1f')).join('-'));
 
         });
@@ -149,28 +127,8 @@ function ready(error,datageo,countries, data) {
         .ticks(5)
         .default([1900, 2025])
         .fill('#2196f3')
-        .on('onchange', async val => {
+        .on('onchange', val => {
             filters.release = val
-
-
-            countries =  (load_movies_per_country(error, datageo, data));
-            svg
-                .selectAll("path")
-                .data(datageo.features).attr("fill", function (d) {
-                var subs = d.properties.wb_a2
-
-                if (subs in countries) {
-                    d.total = countries[subs].Count
-                } else {
-                    d.total = 0
-                }
-
-                return colorScale(d.total);
-            })
-            // Draw the map
-
-
-
             d3.select('p#value-range-date').text(val.map(d3.format(",.0f")).join('-'));
 
         });
@@ -178,32 +136,15 @@ function ready(error,datageo,countries, data) {
 
     gRange.call(sliderRange);
 
-    d3.select('p#value-range').text(
-        sliderRange
-            .value()
-            .map(d3.format('.1f'))
-            .join('-')
-    );
 
     gRangeDate.call(sliderRangeDate);
 
-    d3.select('p#value-range-date').text(
-        sliderRangeDate
-            .value()
-            .map(d3.format('.1f'))
-            .join('-')
-    );
 
 
 
 
 
-    var svg_pie = d3.select("#svg_pie")
 
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
     // Draw the map
     svg
@@ -259,79 +200,7 @@ function ready(error,datageo,countries, data) {
                 height = 450
                 margin = 40
 
-                var radius = Math.min(width, height) / 2 - margin
 
-
-
-
-                var color = d3.scaleOrdinal()
-                    .domain(["a", "b", "c", "d", "e", "f", "g", "h"])
-                    .range(d3.schemeDark2);
-
-                var pie = d3.pie()
-                    .sort(null) // Do not sort group by size
-                    .value(function(d) {return d.value; })
-                var data_ready = pie(d3.entries(count_g))
-                svg_pie.selectAll("path")
-                    .data(data_ready).exit().remove()
-
-                svg_pie.selectAll("polyline")
-                    .data(data_ready).exit().remove()
-                svg_pie.selectAll("text")
-                    .data(data_ready).exit().remove()
-
-                var arc = d3.arc()
-                    .innerRadius(radius * 0.5)         // This is the size of the donut hole
-                    .outerRadius(radius * 0.8)
-
-                var outerArc = d3.arc()
-                    .innerRadius(radius * 0.9)
-                    .outerRadius(radius * 0.9)
-
-
-                svg_pie
-                    .selectAll('allSlices')
-                    .data(data_ready)
-                    .enter()
-                    .append('path')
-                    .attr('d', arc)
-                    .attr('fill', function(d){ return(color(d.data.key)) })
-                    .attr("stroke", "white")
-                    .style("stroke-width", "2px")
-                    .style("opacity", 0.7)
-
-// Add the polylines between chart and labels:
-                svg_pie
-                    .selectAll('allPolylines')
-                    .data(data_ready)
-                    .enter()
-                    .append('polyline')
-                    .attr("stroke", "black")
-                    .style("fill", "none")
-                    .attr("stroke-width", 1)
-                    .attr('points', function(d) {
-                        var posA = arc.centroid(d) // line insertion in the slice
-                        var posB = outerArc.centroid(d) // line break: we use the other arc generator that has been built only for that
-                        var posC = outerArc.centroid(d); // Label position = almost the same as posB
-                        var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
-                        posC[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
-                        return [posA, posB, posC]
-                    })
-
-// Add the polylines between chart and labels:
-                svg_pie
-                    .selectAll('allLabels')
-                    .data(data_ready)
-                    .enter()
-                    .append('text')
-                    .text( function(d) {  return d.data.key+" ("+d.data.value+")" } )
-                    .attr('transform', function(d) {
-                        var pos = outerArc.centroid(d);
-                        var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-                        pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
-                        return 'translate(' + pos + ')';
-                    })
-                    .style('text-anchor', 'end')
 
 
             }
@@ -340,11 +209,6 @@ function ready(error,datageo,countries, data) {
         }).on("mouseleave",function(d){
 
 
-        svg_pie.selectAll("path")
-            .remove()
-
-        svg_pie.selectAll("polyline").remove()
-        svg_pie.selectAll("text").remove()
 
 
         return tooltip.style("visibility", "hidden")}).on("click", function (d) { click(d); })
@@ -353,7 +217,7 @@ function ready(error,datageo,countries, data) {
 
 
 function click(d){
-    window.location = window.location.origin + ("/movielist.html?country="+d.properties.wb_a2)
+    window.location = window.location.origin + ("/genres.html?country="+d.properties.wb_a2)
 }
 
 function load_data(error, datageo){
@@ -368,7 +232,6 @@ function load_data(error, datageo){
                 pairs.forEach(s=>{
                     var pair = cutSides(s).split(": ");
 
-                    cutted_sides = cutSides(pair[1]);
 
                     if (pair[0]==="name'"){
                         pair[1] = pair[1].substring(1, pair[1].length - 1)
@@ -474,6 +337,16 @@ function load_movies_per_country(error,datageo, data){
             // Return if no common element exist
             return false;
         });
+    data =  data.filter(function (a) {
+
+        for (let g of a.genres){
+            if (!filters.genres.has(g)){
+                return false
+            }
+
+        }
+        return true
+    });
         data.forEach(d => {
 
             if (d.production_countries){
