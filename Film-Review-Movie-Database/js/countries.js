@@ -16,10 +16,10 @@ var projection = d3.geoMercator()
 
 d3.queue().defer(d3.json, "custom.geo.json").await(load_data);
 // Data and color scale
-
+let value_keys = [0, 1, 50, 100,500,1000,5000,10000,20000 ]
 var colorScale = d3.scaleThreshold()
-  .domain([0, 1, 50, 100,500,1000,5000,10000,20000 ])
-  .range(d3.schemeReds[9]);
+  .domain(value_keys)
+  .range(["#fff5f0","#fee0d3","#fdc3ac","#fca082","#fb7c5c","#f5553d","#e23028","#c2181c","#9b0d14","#67000d"]);
 
 // Range
 
@@ -62,11 +62,23 @@ var gRangeDate = d3
 
 
 
-
+var all_genres = new Set()
+all_genres.add("All")
+filters.genres.add("All")
 
 
 
 function ready(error,datageo,countries, data) {
+    d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/home.html")})
+    d3.select("#genres_click").on('click',v=>{
+        console.log("CLICK")
+        window.location = window.location.origin + ("/genres.html")})
+
+    d3
+        .select("body")
+        .append("svg")
+        .attr("class", "legend");
+
 
     var sliderRange = d3
         .sliderBottom()
@@ -91,10 +103,21 @@ function ready(error,datageo,countries, data) {
         .attr("type", "checkbox")
         .attr("id", function(d,i) { return i; })
         .on("change", val => {
-            if (filters.genres.has(val)){
-                filters.genres.delete(val)
+            if (val==='All'){
+                if (filters.genres.has(val)){
+                    d3.select("#checkbox_div").selectAll('input').property('checked', false);
+                    filters.genres = new Set()
+                }else{
+                    filters.genres = all_genres
+                    d3.select("#checkbox_div").selectAll('input').property('checked', true);
+                }
+
             }else{
-                filters.genres.add(val)
+                if (filters.genres.has(val)){
+                    filters.genres.delete(val)
+                }else{
+                    filters.genres.add(val)
+                }
             }
 
 
@@ -172,9 +195,12 @@ function ready(error,datageo,countries, data) {
             let count, budget, revenue = 0
 
 
-
             var subs = d.properties.wb_a2
             if (subs in countries) {
+                d3.select(this).transition()
+                    .duration('1')
+                    .attr('opacity', '.45');
+
                 count = countries[subs].Count
                 revenue = countries[subs].Revenue
                 budget = countries[subs].Budget
@@ -207,13 +233,44 @@ function ready(error,datageo,countries, data) {
 
 
         }).on("mouseleave",function(d){
-
+        d3.select(this).transition()
+            .duration('50')
+            .attr('opacity', '1');
 
 
 
         return tooltip.style("visibility", "hidden")}).on("click", function (d) { click(d); })
 
+    var legend = svg.selectAll('rect')
+        .data(colorScale.domain())
+        .enter()
+        .append('rect')
+        .attr("x", 10)
+        .attr("y", function(d, i) {
+            return  height/2+i * 20;
+        })
+        .attr("width", 10)
+        .attr("height", 20)
+        .style("fill", colorScale)
+    svg.selectAll("mylabels")
+        .data(value_keys)
+        .enter()
+        .append("text")
+        .attr("x", 25)
+        .attr("y", function(d,i){ return height/2+10+i * 20;})
+
+        .style("fill", function(d){ return colorScale(d)})
+        .text(function(d,i ){
+            if (d === 0)
+                return 0
+            if (i===value_keys.length-1)
+                return ">" + d
+            return "["+d+", "+value_keys[i+1]+"["})
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle")
+
 }
+
 
 
 function click(d){
@@ -237,7 +294,7 @@ function load_data(error, datageo){
                         pair[1] = pair[1].substring(1, pair[1].length - 1)
                         d.genres.push(pair[1])
                             filters.genres.add(pair[1])
-
+                        all_genres.add(pair[1])
 
 
 

@@ -58,30 +58,22 @@
 <header class="ht-header">
 	<div class="container">
 		<nav class="navbar navbar-default navbar-custom">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header logo">
-				    <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					    <span class="sr-only">Toggle navigation</span>
-					    <div id="nav-icon1">
-							<span></span>
-							<span></span>
-							<span></span>
-						</div>
-				    </div>
-				    <a href="index-2.html"><img class="logo" src="images/logo1.png" alt="" width="119" height="58"></a>
-			    </div>
-				<!-- Collect the nav links, forms, and other content for toggling -->
+
 				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav flex-child-menu menu-left">
-						<li class="hidden">
-							<a href="#page-top"></a>
+						<li class="dropdown first">
+							<a href="home.html" id="countries_click" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+								Countries
+							</a>
 						</li>
 						<li class="dropdown first">
-							<a class="btn btn-default dropdown-toggle lv1" href="home.html" data-toggle="dropdown">
-							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+							<a href="home.html" id="genres_click"class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+								Genres
 							</a>
-
 						</li>
+
+
+
 					</ul>
 				</div>
 			<!-- /.navbar-collapse -->
@@ -98,11 +90,8 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="hero-ct">
-					<h1> movie listing - list</h1>
-					<ul class="breadcumb">
-						<li class="active"><a href="#">Home</a></li>
-						<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
-					</ul>
+					<h1> Movie Genres</h1>
+
 				</div>
 			</div>
 		</div>
@@ -113,7 +102,7 @@
 	<div class="container">
 
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
-
+			<div class="sidebar">
 			<h4 class="sb-title">Rating</h4>
 			<div class="row" style=" margin:10px">
 
@@ -124,14 +113,14 @@
 
 			</div>
 
-
+		</div>
 
 
 
 		</div>
 
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
-
+			<div class="sidebar">
 			<h4 class="sb-title">Release Date</h4>
 			<div class="row" style=" margin:10px">
 
@@ -141,11 +130,13 @@
 
 
 			</div>
+				</div>
 
 
 		</div>
-		<div class="col-md-8 col-sm-24 col-xs-24" style="padding:10px;color:lightsteelblue;fill:white">
+		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
 			<div class="sidebar">
+
 				<h4 class="sb-title">Country Selection</h4>
 				<div class="row" style="padding:10px">
 
@@ -164,20 +155,20 @@
 			</div>
 		</div>
 
-		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
+		<div class="col-md-3 col-sm-12 col-xs-12 center" style="padding:10px;color:lightsteelblue;fill:white">
 
-			<div class="row" style=" margin:10px">
 
-				<input type="button" id="checkbox_submit" value="Filter">
-
-			</div>
 
 
 		</div>
 
 		<div class="col-md-8 col-sm-24 col-xs-24" >
 
-			<h1 id="title" style="color:lightsteelblue">World Movie Production</h1>
+			<h1 id="title" class="sb-title" style="color:lightsteelblue">World Movie Production</h1>
+
+
+
+
 
 			<div  id="world_movies">
 				<div  id='pie_svg'>
@@ -195,6 +186,11 @@
 
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
 			<div class="sidebar">
+				<div class="row" style=" margin:10px">
+
+					<input type="button" id="checkbox_submit" value="Filter">
+
+				</div>
 				<h4 class="sb-title">Genre Selection</h4>
 				<div class="row" style="padding:10px">
 

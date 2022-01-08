@@ -40,8 +40,8 @@ var gRangeDate = d3
 
 
 
-var width = 450
-height = 450
+var width = 650
+height = 650
 margin = 40
 
 // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
@@ -55,7 +55,8 @@ var svg = d3.select("#pie_svg")
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-
+d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/home.html")})
+d3.select("#genres_click").on('click',v=>{ window.location = window.location.origin + ("/genres.html")})
 
 // set the color scale
 var color = d3.scaleOrdinal()
@@ -64,6 +65,7 @@ var color = d3.scaleOrdinal()
 var all_genres = new Set()
 var all_countries = new Set()
 filters.countries=("All")
+filters.genres.add("All")
 all_countries.add("All")
 all_genres.add("All")
 
@@ -72,7 +74,7 @@ function update(datageo, data, original_data) {
 
     var country_code_map = get_country_list(datageo)
 
-    d3.select("#title").html("<h1>Seeing results for " + country_code_map[filters.countries]+"</h1>")
+    d3.select("#title").html("<h1>Seeing results for " + country_code_map[filters.countries]+ " (" +data.length+" Movies)</h1>")
 
     var sliderRange = d3
         .sliderBottom()
@@ -163,12 +165,9 @@ function update(datageo, data, original_data) {
 
     gRangeDate.call(sliderRangeDate);
 
-
-
-
-
-    count_g = genre_counter(data)
-    console.log(count_g, original_data.length)
+    var result = genre_counter(data)
+    var count_g = result[0]
+    var popular = result[1]
 
     // Compute the position of each group on the pie:
     var pie = d3.pie()
@@ -199,15 +198,38 @@ function update(datageo, data, original_data) {
             .duration('1')
             .attr('opacity', '.85');
         var coordinates= d3.mouse(this);
-        var x = coordinates[0]+150;
+        var x = coordinates[0]+350;
         var y = coordinates[1]+150;
+
+        var items = Object.keys(popular[d.data.key]).map(function(key) {
+            return [key, popular[d.data.key][key]];
+        });
+        items.sort(function(first, second) {
+            return second[1][0] - first[1][0];
+        });
+        var keys = items.slice(0,5).map(
+            (e) => { return [e[0],e[1][1]] });
+
+
 
         tooltip.style("visibility", "visible").style("padding", "10px")
             .style("top", (y)+"px")
             .style("left",(x)+"px").html(
             "<h1>"+d.data.value+ " " + d.data.key +" Movies </h1>"+
-            "<a style='color:blue'>"+d3.format(",.1%")((d.data.value)/data.length)+ " Of All Movies Are Included In This Genre</a>"
+            "<span style='color:blue'>"+d3.format(",.1%")((d.data.value)/data.length)+ " Of All Movies Are Included In This Genre</span>"
+
+
+
         )
+
+        tooltip.append("p")
+        tooltip.append("h6").text("Popular Movies")
+        var index = 0
+        for (var key of keys){
+            index+=1
+            tooltip.append("p").text("\t"+index+" - "+key[0]+", Score "+key[1]+"\n")
+        }
+
 
     })
     .on('mouseout', function (d, i) {
@@ -250,9 +272,6 @@ function name_from_code(datageo, d){
     return ""
 }
 
-function click(d){
-    window.location = window.location.origin + ("/genres.html?country="+d.properties.wb_a2)
-}
 
 function load_data(error, datageo){
     d3.csv("js/movies_metadata.csv", function(error, data) {
@@ -347,17 +366,29 @@ function apply_filters(datageo, data, original_data){
 }
 function genre_counter(data){
     var counter = {}
-    var avg_rating = {}
+    var popular = {}
     data.forEach(d=>{
+        var p_score = [d.popularity, d.vote_average]
         for (var g of d.genres){
-            if (g in counter){
-                counter[g]+=1
-            }else{
-                counter[g] = 1
+            if (title!=="title"){
+                if (g in counter){
+                    counter[g]+=1
+                }else{
+                    counter[g] = 1
+                }
+
+                if (g in popular){
+
+                    popular[g][d.original_title]= p_score
+                }else{
+                    popular[g] = {  }
+                    popular[g][d.original_title] = p_score
+                }
             }
+
         }
     })
-    return counter
+    return [counter,popular];
 }
 
 
