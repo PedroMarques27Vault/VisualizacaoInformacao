@@ -145,7 +145,7 @@ function update(datageo, dataset,original_data) {
     gRange.call(sliderRange);
     gRangeDate.call(sliderRangeDate);
 
-    var dataset = get_top5(dataset)
+    var dataset = get_top10(dataset)
     var slicedtitles = []
     var sliced_ratings = []
 
@@ -194,7 +194,7 @@ function update(datageo, dataset,original_data) {
     for (let d of dataset){
         svg.append("text")
             .attr("class", "y label")
-            .attr("y", y(d.title)+50)
+            .attr("y", y(d.title)+25)
             .attr("x", 20)
             .text(d.title);
     }
@@ -301,11 +301,11 @@ function load_data(error, datageo){
     })
 }
 
-function get_top5(data){
+function get_top10(data){
     data.sort(function(first, second) {
         return second.popularity - first.popularity;
     });
-    var keys = data.slice(0,5)
+    var keys = data.slice(0,10)
 
     /* keys.sort(function(first, second) {
         return second.vote_average - first.vote_average;
