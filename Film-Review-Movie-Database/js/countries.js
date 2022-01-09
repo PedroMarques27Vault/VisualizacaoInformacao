@@ -239,7 +239,8 @@ function ready(error,datageo,countries, data) {
 
 
 
-        return tooltip.style("visibility", "hidden")}).on("click", function (d) { click(d); })
+        return tooltip.style("visibility", "hidden")})
+        .on("click", function (d) { click(d); })
 
     var legend = svg.selectAll('rect')
         .data(colorScale.domain())

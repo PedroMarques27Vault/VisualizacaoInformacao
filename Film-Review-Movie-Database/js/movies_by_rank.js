@@ -1,9 +1,9 @@
 let titles = []
 let ratings = []
-let filters = {genres:new Set(), rating :[0,10], release:[1900, 2025]}
+let filters = {countries:"All",genres:new Set(), rating :[0,10], release:[1900, 2025]}
 var all_genres = new Set()
 var all_countries = new Set()
-filters.countries=("All")
+
 filters.genres.add("All")
 all_countries.add("All")
 all_genres.add("All")
@@ -54,7 +54,6 @@ var svg = d3.select("#movies_rated").append("svg")
 
 
 
-d3.select("input[value=\"total\"]").property("checked", true);
 
 d3.queue().defer(d3.json, "custom.geo.json").await(load_data);
 
@@ -76,7 +75,7 @@ function update(datageo, dataset,original_data) {
     svg.selectAll("*").remove();
     var country_code_map = get_country_list(datageo)
 
-    d3.select("#title").html("<h1>Seeing results for " + country_code_map[filters.countries]+ " (" +dataset.length+" Movies)</h1>")
+    d3.select("#title").html("<h2>Seeing results for " + country_code_map[filters.countries]+ " (" +dataset.length+" Movies)\n <p>Included Genres:"+Array.from(filters.genres).join(', ')+"</p> </h2>")
 
     var sliderRange = d3
         .sliderBottom()
@@ -97,8 +96,9 @@ function update(datageo, dataset,original_data) {
         .enter().append("label")
         .text(function(d) { return d; })
         .append("input")
-        .attr("checked", true)
         .attr("type", "checkbox")
+        .attr("checked",  true)
+
         .attr("id", function(d,i) { return i; })
         .on("change", val => {
             if (val==='All'){
@@ -123,6 +123,10 @@ function update(datageo, dataset,original_data) {
 
         })
         .attr("for", function(d,i) { return i; });
+
+    d3.selectAll('input').property('checked', d=>{
+        return filters.genres.has(d)
+    });
 
     d3.select("#checkbox_submit").on("click",val=>{
         apply_filters(datageo, dataset,original_data)
@@ -347,6 +351,10 @@ function load_data(error, datageo){
             filters.countries = new Set()
             filters.countries=(urlParams.get('country'))
         }
+        if (urlParams.get('genre')){
+            filters.genres = new Set()
+            filters.genres.add(urlParams.get('genre'))
+        }
 
 
         apply_filters(datageo, data, data)
@@ -364,7 +372,7 @@ function get_top5(data){
     return keys
 }
 function apply_filters(datageo, data, original_data){
-
+    console.log(filters.genres)
     var altereddata = original_data.filter(function (a) {
         return a.vote_average >= filters.rating[0] && a.vote_average <= filters.rating[1]
     });

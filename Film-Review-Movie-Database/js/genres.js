@@ -238,11 +238,20 @@ function update(datageo, data, original_data) {
                 .duration('50')
                 .attr('opacity', '1');
         tooltip.style("visibility", "hidden")
-         })
+         }).on("click", function (d) { click(d); })
     // remove the group that is not present anymore
     u
         .exit()
         .remove()
+
+}
+
+
+function click(d){
+    if (filters.countries==="All")
+        window.location = window.location.origin + ("/ranked.html?country=All&genre="+d.data.key)
+    else
+        window.location = window.location.origin + ("/ranked.html?country="+filters.countries+ "&genre="+d.data.key)
 
 }
 
