@@ -1,14 +1,5 @@
 <!DOCTYPE html>
-<!--[if IE 7]>
-<html class="ie ie7 no-js" lang="en-US">
-<![endif]-->
-<!--[if IE 8]>
-<html class="ie ie8 no-js" lang="en-US">
-<![endif]-->
-<!--[if !(IE 7) | !(IE 8)  ]><!-->
 <html lang="en" class="no-js">
-
-<!-- movielist07:38-->
 <head>
 	<!-- Basic need -->
 	<title>Movie Genres</title>
@@ -23,8 +14,6 @@
 	<!-- Mobile specific meta -->
 	<meta name=viewport content="width=device-width, initial-scale=1">
 	<meta name="format-detection" content="telephone-no">
-
-
 
 	<script src="https://d3js.org/d3.v4.js"></script>
 	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -74,15 +63,9 @@
 							Popular
 						</a>
 					</li>
-
-
 				</ul>
 			</div>
-			<!-- /.navbar-collapse -->
 		</nav>
-
-		<!-- top search form -->
-
 	</div>
 </header>
 
@@ -92,7 +75,6 @@
 			<div class="col-md-12">
 				<div class="hero-ct">
 					<h1> Movie Genres</h1>
-
 				</div>
 			</div>
 		</div>
@@ -101,118 +83,61 @@
 
 <div class="page-single">
 	<div class="container">
-
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
 			<div class="sidebar">
-			<h4 class="sb-title">Rating</h4>
-			<div class="row" style=" margin:10px">
-
-				<div class="row align-items-center">
-					<div class="col-sm"><div id="slider-range"></div></div>
+				<h4 class="sb-title">Rating</h4>
+				<div class="row" style=" margin:10px">
+					<div class="row align-items-center">
+						<div class="col-sm"><div id="slider-range"></div></div>
+					</div>
 				</div>
-
-
 			</div>
-
-		</div>
-
-
-
 		</div>
 
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
 			<div class="sidebar">
-			<h4 class="sb-title">Release Date</h4>
-			<div class="row" style=" margin:10px">
-
-				<div class="row align-items-center">
-					<div class="col-sm"><div id="slider-range-date"></div></div>
+				<h4 class="sb-title">Release Date</h4>
+				<div class="row" style=" margin:10px">
+					<div class="row align-items-center">
+						<div class="col-sm"><div id="slider-range-date"></div></div>
+					</div>
 				</div>
-
-
 			</div>
-				</div>
-
-
 		</div>
+		
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
 			<div class="sidebar">
-
 				<h4 class="sb-title">Country Selection</h4>
 				<div class="row" style="padding:10px">
-
-
 					<div id="countries_select_div"  style="margin:auto; padding: 10px">
 						<select id="countries_select"></select>
 					</div>
-
-
-
-
 				</div>
-
-
-
 			</div>
 		</div>
 
-		<div class="col-md-3 col-sm-12 col-xs-12 center" style="padding:10px;color:lightsteelblue;fill:white">
-
-
-
-
-		</div>
+		<div class="col-md-3 col-sm-12 col-xs-12 center" style="padding:10px;color:lightsteelblue;fill:white"></div>
 
 		<div class="col-md-8 col-sm-24 col-xs-24" >
-
 			<h1 id="title" class="sb-title" style="color:lightsteelblue">World Movie Production</h1>
-
-
-
-
-
 			<div  id="world_movies">
-				<div  id='pie_svg'>
-				</div>
-
-
-
-
+				<div  id='pie_svg'></div>
 			</div>
-
 		</div>
-
-
-
 
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
 			<div class="sidebar">
 				<div class="row" style=" margin:10px">
-
 					<input type="button" id="checkbox_submit" value="Filter">
-
 				</div>
 				<h4 class="sb-title">Genre Selection</h4>
 				<div class="row" style="padding:10px">
-
-
-					<div id="checkbox_div" class="row align-items-center" style="margin:auto">
-					</div>
-
-
-
-
+					<div id="checkbox_div" class="row align-items-center" style="margin:auto"></div>
 				</div>
-
-
-
 			</div>
 		</div>
-
 	</div>
 </div>
-
-<!-- end of footer section-->
 
 <script src="js/jquery.js"></script>
 <script src="js/plugins.js"></script>
@@ -222,5 +147,4 @@
 <script src="js/range_slider.js"></script>
 </body>
 
-<!-- movielist07:38-->
 </html>

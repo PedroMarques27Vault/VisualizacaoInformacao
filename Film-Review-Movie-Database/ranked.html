@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<!--[if IE 7]>
-<html class="ie ie7 no-js" lang="en-US">
-<![endif]-->
-<!--[if IE 8]>
-<html class="ie ie8 no-js" lang="en-US">
-<![endif]-->
-<!--[if !(IE 7) | !(IE 8)  ]><!-->
 <html lang="en" class="no-js">
 <head>
 	<!-- Basic need -->
@@ -49,8 +42,6 @@
 	</div>
 </div>
 <!--end of preloading-->
-
-
 <header class="ht-header">
 	<div class="container">
 		<nav class="navbar navbar-default navbar-custom">
@@ -71,25 +62,18 @@
 							Popular
 						</a>
 					</li>
-
-
 				</ul>
 			</div>
-			<!-- /.navbar-collapse -->
 		</nav>
-
-		<!-- top search form -->
-
 	</div>
 </header>
-<!-- END | Header -->
 
 <div class="hero common-hero">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="hero-ct">
-					<h1 id='p1' >Popular Movies Right Now</h1>
+					<h1 id='p1'> Movies By Popularity</h1>
 				</div>
 			</div>
 		</div>
@@ -99,12 +83,12 @@
 <div class="page-single" >
 	<div class="container">
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
-				<h4 class="sb-title">Rating</h4>
-				<div class="row" style=" margin:10px">
-					<div class="row align-items-center">
-						<div class="col-sm"><div id="slider-range"></div></div>
-					</div>
+			<h4 class="sb-title">Rating</h4>
+			<div class="row" style=" margin:10px">
+				<div class="row align-items-center">
+					<div class="col-sm"><div id="slider-range"></div></div>
 				</div>
+			</div>
 		</div>
 
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
@@ -115,48 +99,38 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
 			<div class="sidebar">
-
 				<h4 class="sb-title">Country Selection</h4>
 				<div class="row" style="padding:10px">
-
-
 					<div id="countries_select_div"  style="margin:auto; padding: 10px">
 						<select id="countries_select"></select>
 					</div>
-
-
-
-
-				</div>
-
-
-
-			</div>
-		</div>
-		<div class="sidebar">
-			<h1 id="title" style="color:lightsteelblue" class="sb-title"> Popular Movies Right Now</h1></div>
-	<div class="col-md-8 col-sm-24 col-xs-24" style="background-color: beige">
-
-		<div class="container">
-			<div id="movies_rated">
-
-			</div>
-		</div>
-		
-	</div>
-
-	<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
-		<div class="sidebar">
-			<h4 class="sb-title">Genre Selection</h4>
-			<input type="button" id="checkbox_submit" value="Filter">
-			<div class="row" style="padding:10px">
-				<div id="checkbox_div" class="row align-items-center" style="margin:auto">
 				</div>
 			</div>
 		</div>
-	</div>
+
+		<div class="sidebar">
+			<h1 id="title" style="color:lightsteelblue" class="sb-title"> Popular Movies Right Now</h1>
+		</div>
+
+		<div class="col-md-8 col-sm-24 col-xs-24" style="background-color: beige">
+			<div class="container">
+				<div id="movies_rated"></div>
+			</div>
+		</div>
+
+		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
+			<div class="sidebar">
+				<h4 class="sb-title">Genre Selection</h4>
+				<input type="button" id="checkbox_submit" value="Filter">
+				<div class="row" style="padding:10px">
+					<div id="checkbox_div" class="row align-items-center" style="margin:auto">
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 </div>
@@ -165,9 +139,7 @@
 <script src="js/plugins.js"></script>
 <script src="js/plugins2.js"></script>
 <script src="js/custom.js"></script>
-<script src="js/movies_by_rank.js"></script>
+<script src="js/movies_by_pop_and_rank.js"></script>
 <script src="js/range_slider.js"></script>
 </body>
-
-<!-- moviegrid07:38-->
 </html>

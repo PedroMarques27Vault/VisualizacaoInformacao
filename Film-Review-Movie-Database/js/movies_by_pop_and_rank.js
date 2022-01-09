@@ -64,7 +64,7 @@ function update(datageo, dataset,original_data) {
     svg.selectAll("*").remove();
     var country_code_map = get_country_list(datageo)
 
-    d3.select("#title").html("<h2>Seeing results for " + country_code_map[filters.countries]+ " (" +dataset.length+" Movies)\n <p>Included Genres:"+Array.from(filters.genres).join(', ')+"</p> </h2>")
+    d3.select("#title").html("<h2>Results for " + country_code_map[filters.countries]+ " (" +dataset.length+" Movies)\n <p>Included Genres: "+Array.from(filters.genres).join(', ')+"</p> </h2>")
 
     var sliderRange = d3
         .sliderBottom()
