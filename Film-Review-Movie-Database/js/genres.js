@@ -42,7 +42,7 @@ var gRangeDate = d3
 
 var width = 650
 height = 650
-margin = 40
+var margin = 40
 
 // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
 var radius = Math.min(width, height) / 2 - margin
@@ -57,6 +57,7 @@ var svg = d3.select("#pie_svg")
 
 d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/home.html")})
 d3.select("#genres_click").on('click',v=>{ window.location = window.location.origin + ("/genres.html")})
+d3.select("#ranked_click").on('click',v=>{ window.location = window.location.origin + ("/ranked.html")})
 
 // set the color scale
 var color = d3.scaleOrdinal()

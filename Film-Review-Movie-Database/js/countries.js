@@ -67,12 +67,12 @@ all_genres.add("All")
 filters.genres.add("All")
 
 
+d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/home.html")})
+d3.select("#genres_click").on('click',v=>{ window.location = window.location.origin + ("/genres.html")})
+d3.select("#ranked_click").on('click',v=>{ window.location = window.location.origin + ("/ranked.html")})
 
 function ready(error,datageo,countries, data) {
-    d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/home.html")})
-    d3.select("#genres_click").on('click',v=>{
-        console.log("CLICK")
-        window.location = window.location.origin + ("/genres.html")})
+
 
     d3
         .select("body")

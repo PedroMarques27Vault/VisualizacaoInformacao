@@ -7,8 +7,6 @@
 <![endif]-->
 <!--[if !(IE 7) | !(IE 8)  ]><!-->
 <html lang="en" class="no-js">
-
-<!-- moviegrid07:29-->
 <head>
 	<!-- Basic need -->
 	<title>Movies</title>
@@ -18,8 +16,8 @@
 	<meta name="author" content="">
 	<link rel="profile" href="#">
 
-    <!--Google Font-->
-    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+	<!--Google Font-->
+	<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
 	<!-- Mobile specific meta -->
 	<meta name=viewport content="width=device-width, initial-scale=1">
 	<meta name="format-detection" content="telephone-no">
@@ -39,50 +37,49 @@
 	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
-	
+
 </head>
 <body>
 <!--preloading-->
 <div id="preloader">
-    <img class="logo" src="images/logo1.png" alt="" width="119" height="58">
-    <div id="status">
-        <span></span>
-        <span></span>
-    </div>
+	<img class="logo" src="images/logo1.png" alt="" width="119" height="58">
+	<div id="status">
+		<span></span>
+		<span></span>
+	</div>
 </div>
 <!--end of preloading-->
 
 
-<!-- BEGIN | Header -->
 <header class="ht-header">
 	<div class="container">
 		<nav class="navbar navbar-default navbar-custom">
-				
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav flex-child-menu menu-left">
-					
-						<li class="dropdown first">
-							<a href="home.html" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
-							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
-							</a>
-						</li>
-						<li class="dropdown first">
-							<a href="home.html" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
-							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
-							</a>
-						</li>
-						<li class="dropdown first">
-							<a href="home.html" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
-							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
-							</a>
-						</li>
-					</ul>
-				</div>
+			<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav flex-child-menu menu-left">
+					<li class="dropdown first">
+						<a href="home.html" id="countries_click" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							Countries
+						</a>
+					</li>
+					<li class="dropdown first">
+						<a href="home.html" id="genres_click"class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							Genres
+						</a>
+					</li>
+					<li class="dropdown first">
+						<a href="home.html" id="ranked_click"class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							Ranking
+						</a>
+					</li>
+
+
+				</ul>
+			</div>
 			<!-- /.navbar-collapse -->
-	    </nav>
-	    
-	   
+		</nav>
+
+		<!-- top search form -->
+
 	</div>
 </header>
 <!-- END | Header -->
@@ -99,7 +96,7 @@
 	</div>
 </div>
 
-<div class="page-single" style="background-color: beige;">
+<div class="page-single" >
 	<div class="container">
 		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
 				<h4 class="sb-title">Rating</h4>
@@ -118,12 +115,33 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
+			<div class="sidebar">
 
-	<div class="col-md-8 col-sm-24 col-xs-24">
-		<h1>Movie Ratings</h1>
+				<h4 class="sb-title">Country Selection</h4>
+				<div class="row" style="padding:10px">
+
+
+					<div id="countries_select_div"  style="margin:auto; padding: 10px">
+						<select id="countries_select"></select>
+					</div>
+
+
+
+
+				</div>
+
+
+
+			</div>
+		</div>
+		<div class="sidebar">
+			<h1 id="title" style="color:lightsteelblue" class="sb-title"> Popular Movies Right Now</h1></div>
+	<div class="col-md-8 col-sm-24 col-xs-24" style="background-color: beige">
+
 		<div class="container">
 			<div id="movies_rated">
-				<svg width="1000" height="1000"></svg>
+
 			</div>
 		</div>
 		
