@@ -65,7 +65,7 @@ all_genres.add("All")
 function update(datageo, data, original_data) {
     var country_code_map = get_country_list(datageo)
 
-    d3.select("#title").html("<h1>Seeing results for " + country_code_map[filters.countries]+ " (" +data.length+" Movies)</h1>")
+    d3.select("#title").html("<h2>Seeing results for " + country_code_map[filters.countries]+ " (" +data.length+" Movies)\n <p>Included Genres:"+Array.from(filters.genres).join(', ')+"</p> </h2>")
 
     var sliderRange = d3
         .sliderBottom()
@@ -315,11 +315,11 @@ function apply_filters(datageo, data, original_data){
 
     altereddata =  altereddata.filter(function (a) {
         for (let g of a.genres){
-            if (!filters.genres.has(g)){
-                return false
+            if (filters.genres.has(g)){
+                return true
             }
         }
-        return true
+        return false
     });
 
     altereddata =  altereddata.filter(function (a) {
