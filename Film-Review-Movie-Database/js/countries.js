@@ -161,6 +161,8 @@ function ready(error,datageo,countries, data) {
             var subs = d.properties.wb_a2
 
             if (subs in countries) {
+
+                d3.select(this).style("cursor", "pointer");
                 d3.select(this).transition()
                     .duration('1')
                     .attr('opacity', '.45');
@@ -190,6 +192,7 @@ function ready(error,datageo,countries, data) {
             }
         })
         .on("mouseleave",function(d){
+            d3.select(this).style("cursor", "default");
             d3.select(this).transition()
                 .duration('50')
                 .attr('opacity', '1');

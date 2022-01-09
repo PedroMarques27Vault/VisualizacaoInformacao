@@ -205,6 +205,10 @@ function update(datageo, dataset,original_data) {
         var coordinates= d3.mouse(this);
         var x = coordinates[0]+100;
         var y = coordinates[1];
+        var prod_countries = []
+        for (let f of d.production_countries){
+            prod_countries.push(country_code_map[f])
+        }
         tooltip.style("visibility", "visible").style("padding", "10px")
             .style("top", (y)+"px")
             .style("left",(x)+"px").html(
@@ -215,6 +219,7 @@ function update(datageo, dataset,original_data) {
             "<p >Overview: "+d.overview + " </p>"+
             "<p>Runtime: "+d.runtime+" minutes </p>"+
             "<p>Release: "+d.release_date+"</p>"+
+            "<p>Production Countries: "+prod_countries.join(', ')+"</p>"+
             "<p style='color:blue'>Genres: "+d.genres.join(', ') + " </p>"
         )
     })

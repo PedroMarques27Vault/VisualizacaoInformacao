@@ -171,6 +171,7 @@ function update(datageo, data, original_data) {
      .style("opacity", 1)
 
     svg.selectAll('path').on('mouseover', function (d, i) {
+        d3.select(this).style("cursor", "pointer");
         d3.select(this).transition()
             .duration('1')
             .attr('opacity', '.85');
@@ -202,10 +203,11 @@ function update(datageo, data, original_data) {
 
         for (var key of keys){
             index+=1
-            tooltip.append("p").text("\t"+index+" - "+key[0]+", Score "+key[1]+"\n")
+            tooltip.append("p").text("\t"+index+" - "+key[0]+", "+key[1]+"/10\n")
         }
     })
     .on('mouseout', function (d, i) {
+        d3.select(this).style("cursor", "default");
         d3.select(this).transition()
             .duration('50')
             .attr('opacity', '1');
