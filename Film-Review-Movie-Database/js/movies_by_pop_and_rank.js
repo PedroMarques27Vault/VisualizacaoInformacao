@@ -122,8 +122,7 @@ function update(datageo, dataset,original_data) {
       .enter()
       .append('option')
       .text(function (d) { return country_code_map[d]; }) // text showed in the menu
-      .attr("value", function (d) { return d; }) // corresponding value returned by the button
-
+      .attr("value", function (d) { return d; })
     d3.select("#countries_select").on("change", function(d) {
         // recover the option that has been chosen
         filters.countries = d3.select(this).property("value")
@@ -145,7 +144,7 @@ function update(datageo, dataset,original_data) {
     gRange.call(sliderRange);
     gRangeDate.call(sliderRangeDate);
 
-    var dataset = get_top10(dataset)
+    var dataset = get_top(dataset,10)
     var slicedtitles = []
     var sliced_ratings = []
 
@@ -210,8 +209,12 @@ function update(datageo, dataset,original_data) {
             .style("top", (y)+"px")
             .style("left",(x)+"px").html(
             "<h1>"+d.title+ "</h1>"+
+
             "<p style='color:blue'>Top "+(i+1) + " most popular right now</p>"+
-            "<p style='color:blue'>Rating: "+d.vote_average + "/10</p>"+
+            "<p style='color:blue'>Rating: "+d.vote_average + "/10 ("+d.vote_count+" votes)</p>"+
+            "<p >Overview: "+d.overview + " </p>"+
+            "<p>Runtime: "+d.runtime+" minutes </p>"+
+            "<p>Release: "+d.release_date+"</p>"+
             "<p style='color:blue'>Genres: "+d.genres.join(', ') + " </p>"
         )
     })
@@ -301,11 +304,11 @@ function load_data(error, datageo){
     })
 }
 
-function get_top10(data){
+function get_top(data,n){
     data.sort(function(first, second) {
         return second.popularity - first.popularity;
     });
-    var keys = data.slice(0,10)
+    var keys = data.slice(0,n)
 
     /* keys.sort(function(first, second) {
         return second.vote_average - first.vote_average;
