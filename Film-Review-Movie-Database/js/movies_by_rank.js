@@ -178,6 +178,7 @@ function update(datageo, dataset,original_data) {
 
 
 
+
     var y = d3.scaleOrdinal()
         .range([height, 0], .2, 0.5).domain(slicedtitles);
 
@@ -220,7 +221,7 @@ function update(datageo, dataset,original_data) {
         .enter().append("rect")
 
     bars.attr("x", d=>{  return (10)})
-        .attr("y", d => y(d.original_title))
+        .attr("y", d => y(d.title))
         .attr("width", d => {
             return x(parseFloat(d.vote_average))
         })
@@ -230,10 +231,10 @@ function update(datageo, dataset,original_data) {
     for (let d of dataset){
         svg.append("text")
             .attr("class", "y label")
-            .attr("y", y(d.original_title)+50)
+            .attr("y", y(d.title)+50)
             .attr("x", 20)
 
-            .text(d.original_title);
+            .text(d.title);
 
     }
 
@@ -244,11 +245,13 @@ function update(datageo, dataset,original_data) {
         var coordinates= d3.mouse(this);
         var x = coordinates[0]+100;
         var y = coordinates[1];
+        console.log(d.genres)
         tooltip.style("visibility", "visible").style("padding", "10px")
             .style("top", (y)+"px")
             .style("left",(x)+"px").html(
-            "<h1>"+d.original_title+ "</h1>"+
-            "<p style='color:blue'>Top "+(i+1) + " most popular right now</p>"
+            "<h1>"+d.title+ "</h1>"+
+            "<p style='color:blue'>Top "+(i+1) + " most popular right now</p>"+
+            "<p style='color:blue'>Genres: "+d.genres.join(',') + " </p>"
 
         )
 
@@ -376,12 +379,12 @@ function apply_filters(datageo, data, original_data){
     altereddata =  altereddata.filter(function (a) {
 
         for (let g of a.genres){
-            if (!filters.genres.has(g)){
-                return false
+            if (filters.genres.has(g)){
+                return true
             }
 
         }
-        return true
+        return false
     });
     altereddata =  altereddata.filter(function (a) {
         if ( a.production_countries.has(filters.countries) || filters.countries==="All"){

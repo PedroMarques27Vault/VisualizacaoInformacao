@@ -380,10 +380,10 @@ function genre_counter(data){
 
                 if (g in popular){
 
-                    popular[g][d.original_title]= p_score
+                    popular[g][d.title]= p_score
                 }else{
                     popular[g] = {  }
-                    popular[g][d.original_title] = p_score
+                    popular[g][d.title] = p_score
                 }
             }
 
