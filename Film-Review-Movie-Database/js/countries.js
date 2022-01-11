@@ -29,7 +29,7 @@ var tooltip = d3.select("#world_movies")
     .style("border-radius", "5px")
     .html("");
 
-let filters = {genres:new Set(), rating :[0,10], release:[1900, 2025]}
+let filters = {genres:new Set(), rating :[0, 10], release:[1900, 2025]}
 
 var gRange = d3
     .select('div#slider-range')
@@ -57,9 +57,31 @@ d3.select("#ranked_click").on('click',v=>{ window.location = window.location.ori
 
 
 function ready(error,datageo,countries, data) {
+
     d3.select("body")
       .append("svg")
       .attr("class", "legend");
+
+      var ratings = ""
+    var release = ""
+
+    filters.rating.forEach(d => {
+        ratings += Math.round(d) +  " and "
+    })
+    var index = ratings.lastIndexOf("and");
+    ratings = ratings.substring(0, index);
+
+    filters.release.forEach(d => {
+        release += Math.round(d) +  " and "
+    })
+    var index = release.lastIndexOf("and");
+    release = release.substring(0, index);
+
+    d3.select("#title").html(
+        "<p>Ratings between " + ratings + "</p>" + 
+        "<p>Release Year between " + release + "</p>" + 
+        "<p>Included Genres: " + Array.from(filters.genres).join(', ') + "</p><p></p></h2>"
+    )
 
     var sliderRange = d3
         .sliderBottom()
@@ -134,7 +156,7 @@ function ready(error,datageo,countries, data) {
 
     gRange.call(sliderRange);
     gRangeDate.call(sliderRangeDate);
-
+    
     // Draw the map
     svg.selectAll("path")
        .data(datageo.features)
@@ -203,8 +225,6 @@ function ready(error,datageo,countries, data) {
             .duration('50')
             .attr('opacity', '1');
 
-
-
         return tooltip.style("visibility", "hidden")})
         .on("click", function (d) { click(d); })
 
@@ -234,6 +254,8 @@ function ready(error,datageo,countries, data) {
             return "["+d+", "+value_keys[i+1]+"["})
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle")
+
+        
 }
 
 
@@ -323,27 +345,16 @@ function load_movies_per_country(error,datageo, data){
     data =  data.filter(function (a) {
         if (a.release_date){
             date = parseInt(a.release_date.substring(0, 4))
-            return date >= filters.release[0] && date <= filters.release[1]
+            return date >= Math.round(filters.release[0]) && date <= Math.round(filters.release[1])
         }
-    });
-    data =  data.filter(function (a) {
-        for(let a_g of a.genres) {
-            for(let f_g of filters.genres) {
-                if(a_g === f_g) {
-                    return true;
-                }
-            }
-        }
-        // Return if no common element exist
-        return false;
     });
     data =  data.filter(function (a) {
         for (let g of a.genres){
-            if (!filters.genres.has(g)){
-                return false
+            if (filters.genres.has(g)){
+                return true
             }
         }
-        return true
+        return false
     });
     data.forEach(d => {
         if (d.production_countries){
@@ -372,4 +383,5 @@ function load_movies_per_country(error,datageo, data){
 }
 
 
-function cutSides(s) { return s.substring(1, s.length - 1); }
+function cutSides(s) { 
+    return s.substring(1, s.length - 1); }

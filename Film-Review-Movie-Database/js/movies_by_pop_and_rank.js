@@ -64,7 +64,28 @@ function update(datageo, dataset,original_data) {
     svg.selectAll("*").remove();
     var country_code_map = get_country_list(datageo)
 
-    d3.select("#title").html("<h2>Results for " + country_code_map[filters.countries]+ " (" +dataset.length+" Movies)\n <p>Included Genres: "+Array.from(filters.genres).join(', ')+"</p> </h2>")
+    var ratings = ""
+    var release = ""
+
+    filters.rating.forEach(d => {
+        ratings += Math.round(d) +  " and "
+    })
+    var index = ratings.lastIndexOf("and");
+    ratings = ratings.substring(0, index);
+
+    filters.release.forEach(d => {
+        release += Math.round(d) +  " and "
+    })
+    var index = release.lastIndexOf("and");
+    release = release.substring(0, index);
+    
+
+    d3.select("#title").html(
+        "<h2>Popular Movies in " + country_code_map[filters.countries] + "\n" + 
+        "<p>Ratings between " + ratings + "</p>" + 
+        "<p>Release Year between " + release + "</p>" + 
+        "<p>Included Genres: " + Array.from(filters.genres).join(', ') + "</p><p></p></h2>")
+        
 
     var sliderRange = d3
         .sliderBottom()
@@ -330,7 +351,7 @@ function apply_filters(datageo, data, original_data){
     altereddata =  altereddata.filter(function (a) {
         if (a.release_date){
             date = parseInt(a.release_date.substring(0, 4))
-            return date >= filters.release[0] && date <= filters.release[1]
+            return date >= Math.round(filters.release[0]) && date <= Math.round(filters.release[1])
         }
     });
 
