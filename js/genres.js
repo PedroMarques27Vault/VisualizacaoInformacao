@@ -277,6 +277,7 @@ function name_from_code(datageo, d){
 
 
 function load_data(error, datageo){
+    var _all_genres = new Set()
     d3.csv("js/movies_metadata.csv", function(error, data) {
         data.forEach(d => {
             if (d.genres && d.genres.includes('[') && d.genres.length!==2){
@@ -290,7 +291,7 @@ function load_data(error, datageo){
                         pair[1] = pair[1].substring(1, pair[1].length - 1)
                         d.genres.push(pair[1])
                         filters.genres.add(pair[1])
-                        all_genres.add(pair[1])
+                        _all_genres.add(pair[1])
                     }
                 })
             }
@@ -312,6 +313,10 @@ function load_data(error, datageo){
                 }
             }
         })
+        var sorted=  Array.from(_all_genres)
+        sorted.sort()
+        var final = ["All"].concat(sorted)
+        all_genres = new Set(final)
 
         if (urlParams.get('country')){
             filters.countries = new Set()

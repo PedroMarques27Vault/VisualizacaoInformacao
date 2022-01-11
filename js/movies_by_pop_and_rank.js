@@ -46,7 +46,6 @@ var svg = d3.select("#movies_rated").append("svg")
 
 
 
-
 d3.queue().defer(d3.json, "custom.geo.json").await(load_data);
 
 var tooltip = d3.select("#movies_rated")
@@ -78,7 +77,7 @@ function update(datageo, dataset,original_data) {
     })
     var index = release.lastIndexOf("and");
     release = release.substring(0, index);
-    
+
 
     d3.select("#title").html(
         "<h2>Popular Movies in " + country_code_map[filters.countries] + "\n" + 
@@ -257,6 +256,13 @@ function update(datageo, dataset,original_data) {
                 .duration('50')
                 .attr('opacity', '1');
         })
+    svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height+35)
+    .text("Average Score");
+
 };
 
 
@@ -289,6 +295,7 @@ function name_from_code(datageo, d){
 
 
 function load_data(error, datageo){
+    var _all_genres = new Set()
     d3.csv("js/movies_metadata.csv", function(error, data) {
         data.forEach(d => {
             if (d.genres && d.genres.includes('[') && d.genres.length!==2){
@@ -300,7 +307,7 @@ function load_data(error, datageo){
                         pair[1] = pair[1].substring(1, pair[1].length - 1)
                         d.genres.push(pair[1])
                         filters.genres.add(pair[1])
-                        all_genres.add(pair[1])
+                        _all_genres.add(pair[1])
                     }
                 })
             }
@@ -323,6 +330,11 @@ function load_data(error, datageo){
                 }
             }
         })
+        var sorted=  Array.from(_all_genres)
+        sorted.sort()
+        var final = ["All"].concat(sorted)
+        all_genres = new Set(final)
+
         if (urlParams.get('country')){
             filters.countries = new Set()
             filters.countries=(urlParams.get('country'))
@@ -350,6 +362,7 @@ function get_top(data,n){
     return keys
 }
 function apply_filters(datageo, data, original_data){
+
 
     var altereddata = original_data.filter(function (a) {
         return a.vote_average >= filters.rating[0] && a.vote_average <= filters.rating[1]
