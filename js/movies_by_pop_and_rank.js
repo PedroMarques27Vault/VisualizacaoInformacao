@@ -27,7 +27,7 @@ var gRangeDate = d3
     .append('g')
     .attr('transform', 'translate(30,30)');
 
-d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/home.html")})
+d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/index.html")})
 d3.select("#genres_click").on('click',v=>{ window.location = window.location.origin + ("/genres.html")})
 d3.select("#ranked_click").on('click',v=>{ window.location = window.location.origin + ("/ranked.html")})
 
@@ -224,7 +224,7 @@ function update(datageo, dataset,original_data) {
             .duration('1')
             .attr('opacity', '.85');
         var coordinates= d3.mouse(this);
-        var x = coordinates[0]+100;
+        var x = coordinates[0]+50;
         var y = coordinates[1];
         var prod_countries = []
         for (let f of d.production_countries){
@@ -237,18 +237,25 @@ function update(datageo, dataset,original_data) {
 
             "<p style='color:blue'>Top "+(i+1) + " most popular right now</p>"+
             "<p style='color:blue'>Rating: "+d.vote_average + "/10 ("+d.vote_count+" votes)</p>"+
-            "<p >Overview: "+d.overview + " </p>"+
-            "<p>Runtime: "+d.runtime+" minutes </p>"+
-            "<p>Release: "+d.release_date+"</p>"+
+
             "<p>Production Countries: "+prod_countries.join(', ')+"</p>"+
             "<p style='color:blue'>Genres: "+d.genres.join(', ') + " </p>"
-        )
+
+        ).append("span").html("<i style='color:blue'><u>Click to see more</u></i>")
+            var _more = tooltip.select("span")
+
+            _more.on("click",_=>{
+            _more.html("<p >Overview: "+d.overview + " </p>"+
+            "<p>Runtime: "+d.runtime+" minutes </p>"+
+            "<p>Release: "+d.release_date+"</p>")
+
+            })
+
     })
         .on('mouseout', function (d, i) {
             d3.select(this).transition()
                 .duration('50')
                 .attr('opacity', '1');
-            tooltip.style("visibility", "hidden")
         })
 };
 

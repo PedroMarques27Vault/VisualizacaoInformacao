@@ -46,7 +46,7 @@ var svg = d3.select("#pie_svg")
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/home.html")})
+d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/index.html")})
 d3.select("#genres_click").on('click',v=>{ window.location = window.location.origin + ("/genres.html")})
 d3.select("#ranked_click").on('click',v=>{ window.location = window.location.origin + ("/ranked.html")})
 

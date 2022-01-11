@@ -51,7 +51,7 @@ var all_genres = new Set()
 all_genres.add("All")
 filters.genres.add("All")
 
-d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/home.html")})
+d3.select("#countries_click").on('click',v=>{ window.location = window.location.origin + ("/index.html")})
 d3.select("#genres_click").on('click',v=>{ window.location = window.location.origin + ("/genres.html")})
 d3.select("#ranked_click").on('click',v=>{ window.location = window.location.origin + ("/ranked.html")})
 
