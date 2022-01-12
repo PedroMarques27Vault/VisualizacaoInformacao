@@ -200,8 +200,7 @@ function ready(error,datageo,countries, data) {
                 tooltip.style("visibility", "visible").style("padding", "10px")
                     .style("top", (y)+"px")
                     .style("left",(x)+"px").html(
-                    "<h1>"+d.properties.admin+ " ("+  filters.release.map(d3.format('.0f'))
-                        .join('-')  +")</h1>"+
+                    "<h1>"+d.properties.admin+"</h1>"+
                     "<p><b style='color:cornflowerblue'>Movies Produced By This Country: "+d3.format(",")(count) +" </b></p>"
                     +"<p>Invested In Movies: "+d3.format(",.3r")(budget) +"$ </p>"
                     +"<p>Revenue From Movies: "+d3.format(",.3r")(revenue) +"$ </p>"           )
