@@ -98,7 +98,7 @@ function ready(error,datageo,countries, data) {
         });
 
     d3.select("#checkbox_div").selectAll("input")
-        .data(Array.from(filters.genres))
+        .data(Array.from(all_genres))
         .enter().append("label")
         .text(function(d) { return d; })
         .append("input")
@@ -298,6 +298,7 @@ function load_data(error, datageo){
         sorted.sort()
         var final = ["All"].concat(sorted)
         all_genres = new Set(final)
+        
 
         var countries = load_movies_per_country(error,datageo,data)
         ready(error,datageo, countries, data)
