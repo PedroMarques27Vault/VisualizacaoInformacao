@@ -1,6 +1,6 @@
 # VI_Project
 Information Visualization Project:
- > Data Visualization using different representational methods
+ > Data Visualization using different representational methods  
  > Visualization of movie data
 
 How to Run:
