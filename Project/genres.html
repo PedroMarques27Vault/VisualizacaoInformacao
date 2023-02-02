@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<!-- Basic need -->
+	<title>Movie Genres</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<link rel="profile" href="#">
+
+    <!--Google Font-->
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+	<!-- Mobile specific meta -->
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone-no">
+
+	<script src="https://d3js.org/d3.v4.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+	<script src="https://unpkg.com/d3-simple-slider"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- CSS files -->
+	<link rel="stylesheet" href="css/plugins.css">
+	<link rel="stylesheet" href="css/custom_slider.scss">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+
+</head>
+<body>
+<!--preloading-->
+<div id="preloader">
+    <img class="logo" src="images/logo1.png" alt="" width="119" height="58">
+    <div id="status">
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!--end of preloading-->
+
+<header class="ht-header">
+	<div class="container">
+		<nav class="navbar navbar-default navbar-custom">
+			<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav flex-child-menu menu-left">
+					<li class="dropdown first">
+						<a href="index.html" id="countries_click" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							Countries
+						</a>
+					</li>
+					<li class="dropdown first">
+						<a href="index.html" id="genres_click" class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							Genres
+						</a>
+					</li>
+					<li class="dropdown first">
+						<a  id="ranked_click"class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+							Popular
+						</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+</header>
+
+<div class="hero common-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1> Movie Genres Per Country</h1>
+					<p>Distribution of movies per genre in a given country</p>
+					<p>Check the top 10 popular movies of a genre by clicking on the chart</p>
+					<p>Use the filters to specify which movies to present</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="page-single">
+	<div class="container">
+		
+		<div class="col-md-8 col-sm-24 col-xs-24" >
+			<h1 id="title" class="sb-title" style="color:lightsteelblue"></h1>
+			<div  id="world_movies">
+				<div  id='pie_svg'></div>
+			</div>
+		</div>
+
+		<div class="col-md-4 col-sm-12 col-xs-12" style="padding:10px;color:lightsteelblue;fill:white">
+			<div class="sidebar">
+				
+				<div class="row" style=" margin:10px">
+					<input type="button" id="checkbox_submit" value="Apply Filters">
+					<p style="text-align:center"><small>After filling your filters click on the "Aplly Filters" button</small></p>
+				</div>
+
+				<h4 class="sb-title">Producer Country Selection</h4>
+				<div class="row" style="padding:10px">
+					<div id="countries_select_div"  style="margin:auto; padding: 10px">
+						<select id="countries_select"></select>
+					</div>
+				</div>
+
+				<h4 class="sb-title">Rating</h4>
+				<!-- <p style="text-align:center"><small>Sort by Movies' Rating</small></p> -->
+			<div class="row" style=" margin:10px">
+				<div class="row align-items-center">
+					<div class="col-sm"><div id="slider-range"></div></div>
+				</div>
+			</div>
+				<h4 class="sb-title">Release Date</h4>
+				<!-- <p style="text-align:center"><small>Sort by Movies' Release Date</small></p> -->
+				<div class="row" style=" margin:10px">
+					<div class="row align-items-center">
+						<div class="col-sm"><div id="slider-range-date"></div></div>
+					</div>
+				</div>
+
+				<h4 class="sb-title">Genre Selection</h4>
+				<!-- <p style="text-align:center"><small>Sort by Movies' Genre(/s)</small></p> -->
+				<div class="row" style="padding:10px">
+					<div id="checkbox_div" class="row align-items-center" style="margin:auto"></div>
+				</div>
+			</div>
+		</div>
+
+		
+	</div>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/plugins2.js"></script>
+<script src="js/custom.js"></script>
+<script src="js/genres.js"></script>
+<script src="js/range_slider.js"></script>
+</body>
+
+</html>
